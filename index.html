@@ -135,11 +135,11 @@
             z-index: 40;
         }
 
-        /* --- CSS CETAK & EXPORT PDF ULTRA COMPACT (LEMBAR MINIMAL) --- */
+        /* --- CSS CETAK & EXPORT PDF (100% PERSIS WEB ASLI) --- */
         @media print, .pdf-export-active {
             @page {
                 size: A4 portrait;
-                margin: 4mm 4mm 4mm 4mm;
+                margin: 6mm 6mm 6mm 6mm;
             }
 
             #snow-container,
@@ -180,23 +180,16 @@
                 overflow: visible !important;
             }
 
-            /* Banner Header Ringkas Saat Cetak */
             .header-banner-container {
                 background-size: 100% 100% !important;
                 background-position: center !important;
-                min-height: 85px !important;
-                padding: 6px !important;
-                margin-bottom: 6px !important;
-                page-break-inside: avoid !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
-            .header-baris-1 { font-size: 14px !important; line-height: 1.1 !important; }
-            .header-baris-2, .header-baris-3, .header-baris-4 { font-size: 8px !important; margin-top: 1px !important; line-height: 1 !important; }
 
-            /* Kompresi Tabel Agar Hemat Lembar Kertas */
             table {
                 width: 100% !important;
                 border-collapse: collapse !important;
-                font-size: 8px !important;
             }
 
             thead {
@@ -208,22 +201,12 @@
                 break-inside: avoid !important;
             }
 
-            th, td {
-                padding-top: 2px !important;
-                padding-bottom: 2px !important;
-                padding-left: 2px !important;
-                padding-right: 2px !important;
-                line-height: 1.1 !important;
+            img {
+                max-width: 100% !important;
+                height: auto !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
-
-            .bus-body-wrapper {
-                max-width: 260px !important;
-                margin: 0 auto !important;
-                padding: 4px !important;
-            }
-
-            .space-y-3 > * + * { margin-top: 0.375rem !important; }
-            .space-y-4 > * + * { margin-top: 0.5rem !important; }
         }
     </style>
 </head>
@@ -2509,19 +2492,19 @@
 
             if (currentTab === 'peserta') {
                 title.innerText = "Cetak / Export PDF Data Peserta";
-                desc.innerText = "Gunakan Cetak Vektor Native untuk hasil paling hemat lembar kertas, huruf tajam, dan tidak terpotong.";
+                desc.innerText = "Gunakan Cetak Vektor Native untuk hasil persis web, huruf tajam, dan tidak terpotong.";
             } else if (currentTab === 'absensi') {
                 title.innerText = "Cetak / Export PDF Rekap Absensi";
-                desc.innerText = "Gunakan Cetak Vektor Native untuk cetak rekap absensi hemat lembar dan jernih.";
+                desc.innerText = "Gunakan Cetak Vektor Native untuk cetak rekap absensi jernih persis seperti di web.";
             } else if (currentTab === 'roadmaps') {
                 title.innerText = "Cetak / Export PDF Roadmap Ziarah";
-                desc.innerText = "Mencetak peta roadmap & rute perjalanan ziarah secara ringkas.";
+                desc.innerText = "Mencetak peta roadmap & rute perjalanan ziarah secara utuh.";
             } else if (currentTab === 'keuangan') {
                 title.innerText = "Cetak / Export PDF Laporan Keuangan";
-                desc.innerText = "Mencetak laporan keuangan secara ringkas dan efisien.";
+                desc.innerText = "Mencetak laporan keuangan persis tampilan web.";
             } else if (currentTab === 'lpj') {
                 title.innerText = "Cetak / Export PDF LPJ Ziarah";
-                desc.innerText = "Mencetak LPJ lengkap beserta paraf pengurus secara ringkas.";
+                desc.innerText = "Mencetak LPJ lengkap beserta paraf pengurus secara rapi.";
             } else {
                 title.innerText = "Cetak / Export PDF Denah Kursi Bus";
                 desc.innerText = "Mencetak denah kursi bus beserta keterangan nama peserta.";
@@ -2561,11 +2544,11 @@
                 'lpj': 'Laporan_LPJ'
             };
             const tabName = tabTitleMap[currentTab] || 'Dokumen';
-            const fileName = `Ziarah_Wali_Kenceng_${tabName}_Compact.pdf`;
+            const fileName = `Ziarah_Wali_Kenceng_${tabName}.pdf`;
 
             setTimeout(() => {
                 const opt = {
-                    margin:       [4, 4, 4, 4],
+                    margin:       [6, 6, 6, 6],
                     filename:     fileName,
                     image:        { type: 'jpeg', quality: 1.0 },
                     pagebreak:    { mode: ['css', 'legacy'] },
