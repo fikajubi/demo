@@ -135,7 +135,7 @@
             z-index: 40;
         }
 
-        /* --- CSS CETAK & EXPORT PDF (100% PERSIS WEB ASLI) --- */
+        /* --- CSS CETAK & EXPORT PDF --- */
         @media print, .pdf-export-active {
             @page {
                 size: A4 portrait;
@@ -718,15 +718,34 @@
                         </table>
                     </div>
 
-                    <!-- TANDA TANGAN KETUA & BENDAHARA -->
-                    <div class="flex justify-between items-start mt-8 px-2 sm:px-8 text-[9px] sm:text-[10px] font-bold text-slate-700 text-center">
-                        <div class="flex flex-col items-center">
-                            <p class="mb-14 uppercase font-black">KETUA RT 08 / KETUA TAKMIR</p>
-                            <p class="uppercase underline font-black whitespace-nowrap">BP. PURNOMO</p>
+                    <!-- TANDA TANGAN LPJ -->
+                    <div class="mt-8 space-y-8 px-2 sm:px-8 text-[9px] sm:text-[10px] font-bold text-slate-700 text-center">
+                        <!-- BARIS ATAS: KETUA (KIRI) & WAKIL (KANAN) -->
+                        <div class="flex justify-between items-start">
+                            <div class="flex flex-col items-center">
+                                <p class="mb-14 uppercase font-black">KETUA RT 08 / KETUA TAKMIR</p>
+                                <p class="uppercase underline font-black whitespace-nowrap">BP. PURNOMO</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <p class="mb-14 uppercase font-black">WAKIL</p>
+                                <p class="uppercase underline font-black whitespace-nowrap">BP. ANTON</p>
+                            </div>
                         </div>
-                        <div class="flex flex-col items-center">
-                            <p class="mb-14 uppercase font-black">BENDAHARA</p>
-                            <p class="uppercase underline font-black whitespace-nowrap">BP. M. BUDI S.</p>
+
+                        <!-- BARIS BAWAH: PENASEHAT (KIRI), SEKRETARIS (TENGAH), BENDAHARA (KANAN) -->
+                        <div class="grid grid-cols-3 items-start gap-2">
+                            <div class="flex flex-col items-center">
+                                <p class="mb-14 uppercase font-black">PENASEHAT</p>
+                                <p class="uppercase underline font-black whitespace-nowrap">BP. MUALIF</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <p class="mb-14 uppercase font-black">SEKRETARIS</p>
+                                <p class="uppercase underline font-black whitespace-nowrap">BP. JATMOKO</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <p class="mb-14 uppercase font-black">BENDAHARA</p>
+                                <p class="uppercase underline font-black whitespace-nowrap">BP. M. BUDI S.</p>
+                            </div>
                         </div>
                     </div>
 
@@ -900,16 +919,16 @@
                 </div>
                 <div class="bg-blue-50/50 p-2 rounded-lg border border-blue-100 space-y-1.5">
                     <div>
-                        <label class="text-[9px] font-bold text-blue-700 uppercase block mb-0.5">Link Bukti Nota (Google Drive) - <span class="text-slate-400">Opsional</span></label>
-                        <input type="url" id="form-keu-link" placeholder="https://drive.google.com/..." class="w-full bg-white border border-blue-200 rounded-lg p-1.5 text-xs font-bold text-slate-800 focus:outline-none focus:border-blue-500">
+                        <label class="text-[9px] font-bold text-blue-700 uppercase block mb-0.5">Link Bukti / YouTube - <span class="text-slate-400">Opsional</span></label>
+                        <input type="url" id="form-keu-link" placeholder="https://youtube.com/... atau Drive" class="w-full bg-white border border-blue-200 rounded-lg p-1.5 text-xs font-bold text-slate-800 focus:outline-none focus:border-blue-500">
                     </div>
                     <div>
-                        <label class="text-[9px] font-bold text-blue-700 uppercase block mb-0.5">Link Bukti Nota 1 (Google Drive) - <span class="text-slate-400">Opsional</span></label>
-                        <input type="url" id="form-keu-link2" placeholder="https://drive.google.com/..." class="w-full bg-white border border-blue-200 rounded-lg p-1.5 text-xs font-bold text-slate-800 focus:outline-none focus:border-blue-500">
+                        <label class="text-[9px] font-bold text-blue-700 uppercase block mb-0.5">Link Bukti 1 / YouTube - <span class="text-slate-400">Opsional</span></label>
+                        <input type="url" id="form-keu-link2" placeholder="https://youtube.com/... atau Drive" class="w-full bg-white border border-blue-200 rounded-lg p-1.5 text-xs font-bold text-slate-800 focus:outline-none focus:border-blue-500">
                     </div>
                     <p class="text-[7.5px] text-blue-500 mt-1 font-bold">
                         <a href="https://drive.google.com/" target="_blank" class="hover:underline flex items-center gap-1">
-                            <i class="fa-solid fa-cloud-arrow-up"></i> Buka Google Drive untuk Upload Nota
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Buka Google Drive / YouTube untuk Link Nota
                         </a>
                     </p>
                 </div>
@@ -1117,12 +1136,13 @@
         }
         for (let i = 0; i < 12; i++) { createSnowflake(); }
 
+        // BUKA TAB PESERTA, KEUANGAN, DAN LPJ MENGGUNAKAN PIN
         function switchTab(tabName) {
             if (tabName === 'peserta' || tabName === 'keuangan' || tabName === 'lpj') {
-                requestAccess('view_' + tabName + '_tab');
-                return;
+                requestAccess('open_tab_' + tabName);
+            } else {
+                executeSwitchTab(tabName);
             }
-            executeSwitchTab(tabName);
         }
 
         function executeSwitchTab(tabName) {
@@ -1722,6 +1742,11 @@
             return tr;
         }
 
+        function isYouTubeUrl(url) {
+            if (!url) return false;
+            return url.includes('youtube.com') || url.includes('youtu.be');
+        }
+
         function getDriveDirectUrl(url) {
             if (!url) return '';
             let fileId = '';
@@ -1740,6 +1765,12 @@
 
         function openNotaModal(rawUrl, title) {
             const url = decodeURIComponent(rawUrl);
+
+            if (isYouTubeUrl(url)) {
+                window.open(url, '_blank', 'noopener,noreferrer');
+                return;
+            }
+
             const directUrl = getDriveDirectUrl(url);
             
             const modal = document.getElementById('modalNotaViewer');
@@ -1761,6 +1792,15 @@
             img.classList.add('hidden');
             const errorBox = document.getElementById('modalNotaError');
             if (errorBox) errorBox.classList.remove('hidden');
+        }
+
+        function createKeuanganLinkButton(linkUrl, labelText, safeKet) {
+            if (!linkUrl || linkUrl === "") return "";
+            if (isYouTubeUrl(linkUrl)) {
+                return `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" class="text-[6px] sm:text-[8px] text-red-600 font-black hover:underline inline-flex items-center gap-0.5 mr-2 cursor-pointer no-print"><i class="fa-brands fa-youtube text-red-600"></i> ${labelText} (YouTube)</a>`;
+            } else {
+                return `<button type="button" onclick="event.stopPropagation(); openNotaModal('${encodeURIComponent(linkUrl)}', '${safeKet}')" class="text-[6px] sm:text-[8px] text-blue-600 font-black hover:underline inline-flex items-center gap-0.5 mr-2 cursor-pointer no-print"><i class="fa-solid fa-file-invoice"></i> ${labelText}</button>`;
+            }
         }
 
         function renderTableKeuangan() {
@@ -1850,12 +1890,9 @@
                     let linksHtml = '';
                     const safeKet = (trx.ket || '').replace(/'/g, "\\'");
                     
-                    if (trx.link && trx.link !== "") {
-                        linksHtml += `<button type="button" onclick="event.stopPropagation(); openNotaModal('${encodeURIComponent(trx.link)}', '${safeKet}')" class="text-[6px] sm:text-[8px] text-blue-600 font-black hover:underline inline-flex items-center gap-0.5 mr-2 cursor-pointer no-print"><i class="fa-solid fa-file-invoice"></i> Lihat Nota</button>`;
-                    }
-                    if (trx.link2 && trx.link2 !== "") {
-                        linksHtml += `<button type="button" onclick="event.stopPropagation(); openNotaModal('${encodeURIComponent(trx.link2)}', '${safeKet} (1)')" class="text-[6px] sm:text-[8px] text-blue-600 font-black hover:underline inline-flex items-center gap-0.5 cursor-pointer no-print"><i class="fa-solid fa-file-invoice"></i> Lihat Nota 1</button>`;
-                    }
+                    linksHtml += createKeuanganLinkButton(trx.link, "Lihat Nota", safeKet);
+                    linksHtml += createKeuanganLinkButton(trx.link2, "Lihat Nota 1", safeKet + " (1)");
+
                     if (linksHtml !== "") {
                         ketHtml += `<br>${linksHtml}`;
                     }
@@ -1891,12 +1928,9 @@
                     let linksHtml = '';
                     const safeKet = (trx.ket || '').replace(/'/g, "\\'");
 
-                    if (trx.link && trx.link !== "") {
-                        linksHtml += `<button type="button" onclick="event.stopPropagation(); openNotaModal('${encodeURIComponent(trx.link)}', '${safeKet}')" class="text-[6px] sm:text-[8px] text-blue-600 font-black hover:underline inline-flex items-center gap-0.5 mr-2 cursor-pointer no-print"><i class="fa-solid fa-file-invoice"></i> Lihat Nota</button>`;
-                    }
-                    if (trx.link2 && trx.link2 !== "") {
-                        linksHtml += `<button type="button" onclick="event.stopPropagation(); openNotaModal('${encodeURIComponent(trx.link2)}', '${safeKet} (1)')" class="text-[6px] sm:text-[8px] text-blue-600 font-black hover:underline inline-flex items-center gap-0.5 cursor-pointer no-print"><i class="fa-solid fa-file-invoice"></i> Lihat Nota 1</button>`;
-                    }
+                    linksHtml += createKeuanganLinkButton(trx.link, "Lihat Nota", safeKet);
+                    linksHtml += createKeuanganLinkButton(trx.link2, "Lihat Nota 1", safeKet + " (1)");
+
                     if (linksHtml !== "") {
                         ketHtml += `<br>${linksHtml}`;
                     }
@@ -2140,9 +2174,7 @@
             pinInput.maxLength = 6;
             pinInput.placeholder = "••••••";
             
-            document.getElementById("pin-modal-subtitle").innerText = (mode.startsWith('view_')) 
-                ? "Masukkan PIN untuk melihat Data" 
-                : "Masukkan PIN Keamanan Admin";
+            document.getElementById("pin-modal-subtitle").innerText = "Masukkan PIN Keamanan Admin";
 
             document.getElementById("pin-modal").classList.remove("hidden");
             pinInput.focus();
@@ -2168,15 +2200,7 @@
 
             if (isValid) {
                 closeModal('pin-modal');
-                if (currentAccessSession.mode === 'view_peserta_tab') {
-                    executeSwitchTab('peserta');
-                } else if (currentAccessSession.mode === 'view_keuangan_tab') {
-                    executeSwitchTab('keuangan');
-                } else if (currentAccessSession.mode === 'view_lpj_tab') {
-                    executeSwitchTab('lpj');
-                } else {
-                    executeProtectedMode(currentAccessSession.mode);
-                }
+                executeProtectedMode(currentAccessSession.mode);
             } else {
                 alert("⚠️ PIN Salah! Akses ditolak.");
                 document.getElementById("input-security-pin").value = "";
@@ -2197,6 +2221,9 @@
             else if (mode === 'add_keuangan') openAddKeuanganModal();
             else if (mode === 'edit_keuangan') openEditKeuanganModal(activeKeuanganId);
             else if (mode === 'delete_keuangan') executeDeleteKeuangan(activeKeuanganId);
+            else if (mode === 'open_tab_peserta') executeSwitchTab('peserta');
+            else if (mode === 'open_tab_keuangan') executeSwitchTab('keuangan');
+            else if (mode === 'open_tab_lpj') executeSwitchTab('lpj');
         }
 
         function openAddPesertaModalWithSeat(seatNum) {
